@@ -92,22 +92,57 @@ support:`<div class="policy"><div class="kicker">IRIS customer care</div><h1>H�
 faq:`<div class="policy"><div class="kicker">Help center</div><h1>Câu hỏi thường gặp</h1><div class="faq"><details open><summary>Khi nào tôi nhận được sản phẩm?</summary><p>Với sản phẩm tải xuống, liên kết sẽ được cung cấp sau khi hệ thống xác nhận thanh toán. Sản phẩm cá nhân hóa có thể cần thời gian xử lý.</p></details><details><summary>Tôi có thể chỉnh sửa sản phẩm đã mua không?</summary><p>Tùy định dạng và giấy phép của từng sản phẩm. Trang sản phẩm cần ghi rõ công cụ tương thích và phạm vi chỉnh sửa.</p></details><details><summary>Tôi đã thanh toán nhưng chưa nhận được file thì sao?</summary><p>Hãy giữ biên nhận, kiểm tra email và thư mục spam, sau đó liên hệ Hotline/Zalo 0906 305 338 hoặc contactfor.irisdigital@gmail.com kèm mã đơn hàng.</p></details><details><summary>Tôi có thể bán lại template hoặc prompt không?</summary><p>Không mặc nhiên được phép. Hãy kiểm tra giấy phép cụ thể của sản phẩm; quyền sử dụng thương mại không đồng nghĩa với quyền phân phối lại file gốc.</p></details><details><summary>IRIS có hỗ trợ sản phẩm theo yêu cầu không?</summary><p>Có thể gửi brief qua biểu mẫu thiết kế theo yêu cầu. Trong bản xem trước này, biểu mẫu chưa kết nối hệ thống tiếp nhận thực tế.</p></details></div></div>`,
 account:`<div class="policy"><div class="kicker">Your IRIS</div><h1>Tài khoản khách hàng</h1><p>Đăng nhập để quản lý thông tin, xem lịch sử đơn hàng và truy cập thư viện sản phẩm đã mua.</p><div class="notice">Đăng nhập tài khoản sẽ được bảo vệ bằng hệ thống xác thực an toàn.</div><button class="primary" onclick="showPage('adminLogin')">Đăng nhập quản trị viên</button></div>`,
 admin:`<div class="policy" style="max-width:100%"><div class="kicker">ADMINISTRATION</div><h1>IRIS Control Center</h1><p>Quản lý danh mục, nội dung sản phẩm và liên kết giao nhận.</p><div class="admin-layout"><aside class="admin-side"><a class="active" href="#admin">Tổng quan</a><a href="#admin-products">Sản phẩm</a><a href="#admin-orders">Đơn hàng</a><a href="#admin-analytics">Phân tích</a><a href="#page-support" onclick="showPage('support')">Hỗ trợ</a><a href="#adminLogin" onclick="showPage('adminLogin')">Đăng xuất</a></aside><div class="admin-main"><div class="admin-cards"><div class="admin-metric"><small>Doanh thu</small><strong>—</strong></div><div class="admin-metric"><small>Đơn hàng</small><strong>—</strong></div><div class="admin-metric"><small>Sản phẩm</small><strong id="admin-prod-count">8</strong></div></div><h2 id="admin-products">Thêm sản phẩm</h2><div class="admin-form-extended"><input id="admin-name" placeholder="Tên sản phẩm" aria-label="Tên sản phẩm"><input id="admin-price" type="number" min="0" placeholder="Giá (VND)" aria-label="Giá sản phẩm"><select id="admin-category" aria-label="Danh mục"><option>Thiệp số</option><option>Template slide</option><option>Prompt AI</option><option>Tài liệu số</option><option>Creator kit</option><option>Sản phẩm khác</option></select><input id="admin-tag" placeholder="Nhãn hiển thị (tùy chọn)" aria-label="Nhãn sản phẩm"><input class="wide" id="admin-desc" placeholder="Mô tả sản phẩm" aria-label="Mô tả sản phẩm"><div class="file-field wide"><label for="admin-image">Tải hình ảnh xem trước</label><input id="admin-image" type="file" accept="image/*"><small>Ảnh dùng làm hình đại diện sản phẩm.</small></div><input class="wide" id="admin-preview" type="url" placeholder="Link xem trước (URL)" aria-label="Link xem trước"><input class="wide" id="admin-delivery" type="url" placeholder="Link nhận sản phẩm / hướng dẫn truy cập (URL)" aria-label="Link nhận sản phẩm"><input class="wide" id="admin-download" type="url" placeholder="Link tải sản phẩm (URL)" aria-label="Link tải sản phẩm"><button class="primary wide" onclick="adminAdd()">+ Thêm sản phẩm</button></div><h2>Danh sách sản phẩm</h2><div class="table-wrap"><table><thead><tr><th>Ảnh</th><th>Sản phẩm</th><th>Danh mục</th><th>Giá</th><th>Liên kết giao nhận</th><th>Thao tác</th></tr></thead><tbody id="admin-table"></tbody></table></div><h2 id="admin-orders">Đơn hàng</h2><p>Trạng thái đơn hàng và giao nhận sẽ được đồng bộ sau khi kết nối hệ thống thanh toán và cơ sở dữ liệu.</p><h2 id="admin-analytics">Phân tích</h2><p>Chỉ số sẽ được hiển thị từ dữ liệu vận hành đã xác minh.</p></div></div></div>`,
-adminLogin:`<div class="admin-auth"><div class="brandmark">I</div><div class="kicker">SECURE ACCESS</div><h1>Đăng nhập quản trị viên</h1><p>Đăng nhập để quản lý sản phẩm, đơn hàng và nội dung cửa hàng IRIS.</p><div class="field"><label for="adminEmail">Email quản trị</label><input id="adminEmail" type="email" autocomplete="username" placeholder="admin@yourdomain.com"></div><div class="field"><label for="adminPassword">Mật khẩu</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu"></div><button class="primary" style="width:100%" onclick="adminLogin()">Đăng nhập an toàn</button><p style="font-size:11px;margin-top:15px">Luồng này hiện chỉ minh họa giao diện. Chưa có xác thực máy chủ; không dùng để bảo vệ dữ liệu quản trị thật.</p><button class="secondary" style="width:100%;margin-top:8px" onclick="home()">Quay lại cửa hàng</button></div>`,
+adminLogin:`<div class="admin-auth"><div class="brandmark">I</div><div class="kicker">SECURE ACCESS</div><h1>Đăng nhập quản trị viên</h1><p>Đăng nhập để quản lý sản phẩm, đơn hàng và nội dung cửa hàng IRIS.</p><div class="field"><label for="adminEmail">Email quản trị</label><input id="adminEmail" type="email" autocomplete="username" placeholder="admin@yourdomain.com"></div><div class="field"><label for="adminPassword">Mật khẩu</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu"></div><button class="primary" style="width:100%" onclick="adminLogin()">Đăng nhập an toàn</button><p style="font-size:11px;margin-top:15px">Thông tin đăng nhập sẽ được xác thực qua máy chủ IRIS.</p><button class="secondary" style="width:100%;margin-top:8px" onclick="home()">Quay lại cửa hàng</button></div>`,
 success:`<div class="success-panel"><div class="success-mark">✓</div><div class="kicker">ORDER CONFIRMED</div><h1 style="font-size:clamp(32px,5vw,48px)">Thanh toán thành công</h1><p>Đơn hàng của bạn đã được xác nhận. Bạn có thể xem trước hoặc tải các sản phẩm đã mua bên dưới.</p><div id="success-items"><p>Thông tin sản phẩm sẽ hiển thị sau khi hệ thống xác minh thanh toán.</p></div><button class="secondary" style="margin-top:22px" onclick="home()">Quay lại cửa hàng</button></div>`
 };
 function showPage(name){document.getElementById('app').classList.add('hidden');let page=document.getElementById('page');page.classList.remove('hidden');document.getElementById('page-inner').innerHTML=pageContent[name]||pageContent.policy;window.scrollTo({top:0,behavior:'smooth'});if(name==='admin')renderAdmin();document.getElementById('navlinks').classList.remove('open')}
 function submitTicket(){let msg=document.getElementById('ticketMessage')?.value.trim();if(!msg){showToast('Vui lòng nhập nội dung yêu cầu.');return}showToast('Vui lòng gửi yêu cầu đến contactfor.irisdigital@gmail.com để được tiếp nhận trực tiếp.')}
-function adminLogin(){
-  let email=document.getElementById('adminEmail')?.value.trim();
-  let pass=document.getElementById('adminPassword')?.value;
-  if(!email||!pass){
+async function adminLogin() {
+  const email = document.getElementById('adminEmail')?.value.trim();
+  const password = document.getElementById('adminPassword')?.value;
+  const button = document.querySelector('.admin-auth button.primary');
+
+  if (!email || !password) {
     showToast('Vui lòng nhập email và mật khẩu.');
     return;
   }
-  // Chỉ là luồng giao diện thử nghiệm: chưa xác thực danh tính ở máy chủ.
-  // Không dùng cơ chế này để bảo vệ dữ liệu quản trị trong môi trường thật.
-  showPage('admin');
-  showToast('Đã mở Stats ở chế độ giao diện thử nghiệm; đăng nhập máy chủ chưa được cấu hình.');
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Đang xác thực...';
+  }
+
+  try {
+    const response = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      cache: 'no-store',
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || result.ok !== true) {
+      showToast(result.error || 'Đăng nhập thất bại.');
+      return;
+    }
+
+    const passwordField = document.getElementById('adminPassword');
+    if (passwordField) passwordField.value = '';
+
+    showPage('admin');
+    showToast('Đăng nhập thành công!');
+  } catch (error) {
+    showToast('Không kết nối được máy chủ. Vui lòng thử lại.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = 'Đăng nhập an toàn';
+    }
+  }
 }
 function readImage(file){return new Promise((resolve,reject)=>{if(!file){resolve('');return}if(!file.type.startsWith('image/')){reject(new Error('Vui lòng chọn tệp hình ảnh.'));return}if(file.size>1500000){reject(new Error('Ảnh vượt quá 1,5 MB. Vui lòng nén ảnh trước khi tải lên.'));return}let reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(new Error('Không thể đọc hình ảnh.'));reader.readAsDataURL(file)})}
 async function adminAdd(){let name=document.getElementById('admin-name').value.trim(),price=Number(document.getElementById('admin-price').value),imageFile=document.getElementById('admin-image').files[0];if(!name||!Number.isFinite(price)||price<0){showToast('Nhập tên sản phẩm và giá hợp lệ.');return}try{let previewImage=await readImage(imageFile);let p={id:Math.max(0,...products.map(p=>p.id))+1,name,category:document.getElementById('admin-category').value,price,tag:document.getElementById('admin-tag').value.trim(),art:'art8',mini:name.slice(0,24),desc:document.getElementById('admin-desc').value.trim(),previewImage,previewUrl:document.getElementById('admin-preview').value.trim(),deliveryUrl:document.getElementById('admin-delivery').value.trim(),downloadUrl:document.getElementById('admin-download').value.trim()};products.push(p);persistProducts();['admin-name','admin-price','admin-tag','admin-desc','admin-preview','admin-delivery','admin-download','admin-image'].forEach(id=>{let e=document.getElementById(id);if(e)e.value=''});renderAdmin();renderProducts();showToast('Đã thêm sản phẩm vào danh sách.')}catch(e){showToast(e.message||'Không thể đọc hình ảnh.')}}
