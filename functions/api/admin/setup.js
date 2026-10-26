@@ -145,10 +145,11 @@ export async function onRequestPost({ request, env }) {
       ok: true,
       message: "Đã tạo tài khoản admin đầu tiên. Hãy xóa hoặc vô hiệu hóa endpoint setup ngay."
     }, 201);
-} catch (error) {
-  console.error("Admin setup error:", error);
-  return json({
-    error: "Không thể khởi tạo tài khoản.",
-    detail: String(error?.message || error)
-  }, 500);
+  } catch (error) {
+    console.error("Admin setup error:", error);
+    return json({
+      error: "Không thể khởi tạo tài khoản.",
+      detail: String(error?.message || error)
+    }, 500);
   }
+}
