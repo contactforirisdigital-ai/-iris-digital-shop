@@ -21,7 +21,7 @@ function toBase64Url(bytes) {
 
 async function hashPassword(password) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iterations = 310000;
+  const iterations = 100000;
 
   const key = await crypto.subtle.importKey(
     "raw",
