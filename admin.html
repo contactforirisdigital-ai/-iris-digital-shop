@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IRIS Digital Shop | Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px;
+      background: #0b0b12; color: #f5f5f7;
+      font-family: Arial, sans-serif;
+    }
+    main { max-width: 1100px; margin: auto; }
+    h1 { color: #c4b5fd; }
+    .panel {
+      background: #171722; border: 1px solid #303044;
+      border-radius: 14px; padding: 20px; margin: 18px 0;
+    }
+    input, button {
+      padding: 12px; border-radius: 8px;
+      border: 1px solid #414158; font-size: 15px;
+    }
+    input {
+      display: block; width: 100%; margin: 10px 0;
+      background: #101019; color: white;
+    }
+    button {
+      cursor: pointer; background: #a78bfa;
+      color: #171323; font-weight: bold;
+    }
+    .secondary { background: #29293b; color: white; }
+    #message { white-space: pre-wrap; color: #fca5a5; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    th, td {
+      padding: 12px; border-bottom: 1px solid #343446;
+      text-align: left; vertical-align: top;
+    }
+    th { color: #c4b5fd; }
+    td { overflow-wrap: anywhere; max-width: 300px; }
+    .muted { color: #aaaabd; font-size: 13px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>IRIS Digital Shop</h1>
+  <p class="muted">Bảng điều khiển quản trị yêu cầu thiết kế</p>
+
+  <section id="loginPanel" class="panel">
+    <h2>Đăng nhập quản trị</h2>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Email quản trị"
+        autocomplete="username" required>
+      <input id="password" type="password" placeholder="Mật khẩu"
+        autocomplete="current-password" required>
+      <button type="submit">Đăng nhập</button>
+    </form>
+  </section>
+
+  <section id="dashboard" class="panel" hidden>
+    <p id="adminInfo" class="muted"></p>
+    <h2>Yêu cầu thiết kế</h2>
+    <button id="refreshBtn" type="button">Tải lại danh sách</button>
+    <button id="logoutBtn" class="secondary" type="button">
+      Đăng xuất
+    </button>
+    <p id="count"></p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ngày gửi</th>
+            <th>Khách hàng</th>
+            <th>Sản phẩm</th>
+            <th>Ngân sách</th>
+            <th>Thời hạn</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody id="requestRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p id="message" role="status"></p>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function showMessage(text) {
+  $("message").textContent = text;
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+async function api(url, options = {}) {
+  const response = await fetch(url, {
+    credentials: "same-origin",
+    cache: "no-store",
+    ...options,
+    headers: {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...options.headers
+    }
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Có lỗi xảy ra.");
+  return data;
+}
+
+async function loadRequests() {
+  showMessage("Đang tải yêu cầu...");
+  $("requestRows").replaceChildren();
+
+  try {
+    const data = await api("/api/admin/design-requests");
+
+    $("loginPanel").hidden = true;
+    $("dashboard").hidden = false;
+    $("adminInfo").textContent = "Đã đăng nhập: " + data.admin.email;
+    $("count").textContent =
+      `Hiển thị ${data.requests.length} yêu cầu gần nhất`;
+
+    $("requestRows").innerHTML = data.requests.map(item => `
+      <tr>
+        <td>${escapeHTML(item.created_at)}</td>
+        <td>
+          <strong>${escapeHTML(item.customer_name)}</strong><br>
+          ${escapeHTML(item.customer_email)}
+        </td>
+        <td>${escapeHTML(item.product_type)}</td>
+        <td>${escapeHTML(item.budget)}</td>
+        <td>${escapeHTML(item.deadline || "Chưa xác định")}</td>
+        <td>${escapeHTML(item.brief)}</td>
+        <td>${escapeHTML(item.status)}</td>
+      </tr>
+    `).join("");
+
+    showMessage("");
+  } catch (error) {
+    if (error.message.includes("đăng nhập")) {
+      $("dashboard").hidden = true;
+      $("loginPanel").hidden = false;
+    }
+    showMessage(error.message);
+  }
+}
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  showMessage("Đang đăng nhập...");
+
+  try {
+    await api("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: $("email").value.trim(),
+        password: $("password").value
+      })
+    });
+    $("password").value = "";
+    await loadRequests();
+  } catch (error) {
+    showMessage(error.message);
+  }
+});
+
+$("refreshBtn").addEventListener("click", loadRequests);
+
+$("logoutBtn").addEventListener("click", async () => {
+  try {
+    await api("/api/admin/logout", { method: "POST" });
+  } catch (error) {
+    showMessage(error.message);
+  }
+  $("dashboard").hidden = true;
+  $("loginPanel").hidden = false;
+  showMessage("Đã đăng xuất.");
+});
+
+loadRequests();
+</script>
+</body>
+</html>
