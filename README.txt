@@ -1,15 +1,14 @@
-IRIS Digital Shop — bản sửa luồng đăng nhập quản trị
+IRIS Digital Studio — update package
 
-Nội dung:
-- index.html: gọi POST /api/admin/login thay vì mở thẳng trang quản trị khi chỉ nhập nội dung bất kỳ.
-- Nếu API trả lỗi hoặc mật khẩu sai, trang không chuyển vào khu vực quản trị.
-- Gửi cookie cùng nguồn và không lưu mật khẩu trong trình duyệt.
+Files:
+- index.html: current website HTML with the production site URL set to https://iris-digital-shop.pages.dev/
 
-Cách dùng:
-1. Giải nén ZIP.
-2. Dùng index.html thay thế file index.html trong GitHub repository.
-3. Commit changes trên nhánh main.
-4. Chờ Cloudflare Pages deploy thành công rồi kiểm tra đăng nhập.
+Important:
+The Worker API URL is not yet known, so API_BASE currently points to the Pages site:
+  const API_BASE = SITE_URL;
 
-Lưu ý bảo mật:
-Bản sửa này chỉ khắc phục luồng đăng nhập ở giao diện. Để bảo vệ hoàn chỉnh, mọi thao tác quản trị và API dữ liệu phải kiểm tra session ở phía máy chủ; chỉ sửa giao diện không đủ để bảo vệ dữ liệu.
+After deploying the Worker, open index.html in GitHub and change API_BASE to the exact workers.dev URL Cloudflare gives you, e.g.
+  const API_BASE = "https://iris-digital-api.YOUR-ACCOUNT.workers.dev";
+
+Do not use the example URL literally. The Worker must also have D1 binding DB -> iris-digital-db and Secret ADMIN_TOKEN configured.
+This package does not claim the Worker has been connected or deployed.
