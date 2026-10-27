@@ -82,7 +82,7 @@ const IRIS_API = "https://iris-digital-api.contactfor-irisdigital.workers.dev";
 let adminToken = "";
 async function apiRequest(path, options={}) {
   const headers = {"Content-Type":"application/json", ...(options.headers||{})};
-  if (adminToken) headers["X-Admin-Token"] = adminToken;
+  if (adminToken) headers["Authorization"] = `Bearer ${adminToken}`;
   const response = await fetch(IRIS_API + path, {...options, headers, cache:"no-store"});
   const data = await response.json().catch(()=>({}));
   if (!response.ok || data.success === false) throw new Error(data.error || `API HTTP ${response.status}`);
